@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בוגרי יבנה - מאגר עסקי</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 8px;
+        }
+
+        .header .tagline {
+            font-size: 0.95em;
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .intro-text {
+            text-align: center;
+            color: #333;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .intro-text p {
+            margin-bottom: 12px;
+            font-size: 0.98em;
+        }
+
+        .intro-text strong {
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group.required label::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 44px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            font-size: 0.9em;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 25px 0 15px 0;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .social-hint {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 50px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .form-row.full {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 בוגרי יבנה</h1>
+            <p class="subtitle">מאגר עסקי בוגרי מחזור קבוצת יבנה</p>
+            <p class="tagline">20 שנים - מפגש חזרה וחיבור חדש</p>
+        </div>
+
+        <div class="card">
+            <div class="success-message" id="successMsg">
+                ✅ תודה על הנתונים! הם נשמרו בהצלחה.
+            </div>
+            <div class="error-message" id="errorMsg"></div>
+
+            <div class="intro-text">
+                <p>שמחים שהצטרפת! 🎉</p>
+                <p>אנחנו בונים <strong>מאגר ממוקד של בוגרי יבנה</strong> כדי שנוכל להיעזר זה בזה ולחוות את הקשר שלנו.</p>
+                <p>בואו נשמור את הפרטים שלך כדי שאחרים יוכלו למצוא אותך וליצור קשר.</p>
+            </div>
+
+            <form id="memberForm">
+                <!-- שם ואתר עיקרי -->
+                <div class="form-row">
+                    <div class="form-group required">
+                        <label for="fullName">שם מלא</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">טלפון</label>
+                        <input type="tel" id="phone" name="phone" placeholder="05xxxxxxxxx">
+                    </div>
+                </div>
+
+                <!-- עסק ותיאור -->
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="businessName">שם העסק / מקום עבודה</label>
+                        <input type="text" id="businessName" name="businessName" placeholder="למשל: חברת טק, קליניקה, ניהול משאבים אנושיים">
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="businessDesc">תיאור העסק / העבודה</label>
+                        <textarea id="businessDesc" name="businessDesc" placeholder="ספר לנו קצת על מה שאתה עושה, שירותים שאתה מציע, או תחום העיסוק שלך..."></textarea>
+                    </div>
+                </div>
+
+                <!-- עיר וקשר -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">עיר / אזור</label>
+                        <input type="text" id="city" name="city" placeholder="למשל: תל אביב, ירושלים, חיפה">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">אימייל</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com">
+                    </div>
+                </div>
+
+                <!-- רשתות חברתיות -->
+                <div class="section-title">🔗 רשתות חברתיות וקישורים (אופציונלי)</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="website">אתר אינטרנט</label>
+                        <input type="url" id="website" name="website" placeholder="https://example.com">
+                        <div class="social-hint">כולל http:// או https://</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook">פייסבוק</label>
+                        <input type="text" id="facebook" name="facebook" placeholder="facebook.com/profile">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="instagram">אינסטגרם</label>
+                        <input type="text" id="instagram" name="instagram" placeholder="@your_handle">
+                    </div>
+                    <div class="form-group">
+                        <label for="linkedin">לינקדאין</label>
+                        <input type="text" id="linkedin" name="linkedin" placeholder="linkedin.com/in/profile">
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit">
+                        <span id="buttonText">שמור את הפרטים שלי</span>
+                        <span class="loading" id="loadingSpinner"><span class="spinner"></span></span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="footer-note">
+                כל הפרטים משמרים בגוגל שיטס וזמינים לחברים במאגר בלבד.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API endpoint on local server
+        const API_URL = 'http://localhost:3000/api/submit-member';
+
+        const form = document.getElementById('memberForm');
+        const successMsg = document.getElementById('successMsg');
+        const errorMsg = document.getElementById('errorMsg');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // איסוף נתונים מהטופס
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                businessName: document.getElementById('businessName').value,
+                businessDesc: document.getElementById('businessDesc').value,
+                city: document.getElementById('city').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                website: document.getElementById('website').value,
+                facebook: document.getElementById('facebook').value,
+                instagram: document.getElementById('instagram').value,
+                linkedin: document.getElementById('linkedin').value
+            };
+
+            // בדיקת שדות חובה
+            if (!formData.fullName.trim()) {
+                showError('אנא מלא את שם מלא');
+                return;
+            }
+
+            // הצגת טעינה
+            buttonText.style.display = 'none';
+            loadingSpinner.style.display = 'inline';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            try {
+                // שליחה לשרת
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess();
+                    form.reset();
+                } else {
+                    showError(data.error || 'שגיאה בשמירת הנתונים. אנא נסה שוב.');
+                }
+            } catch (error) {
+                showError('שגיאה בשמירת הנתונים. בדוק שהשרת פועל על port 3000.');
+                console.error('Error:', error);
+            } finally {
+                buttonText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        function showSuccess() {
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+            successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showError(message) {
+            errorMsg.textContent = '❌ ' + message;
+            errorMsg.style.display = 'block';
+            successMsg.style.display = 'none';
+            errorMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
